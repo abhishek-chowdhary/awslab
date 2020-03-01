@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creating DynamoDb table 
+Parameters:
+  TableName: 
+    Type: String 
+Resources:
+  Employeetable: 
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: employeetable
+      AttributeDefinitions: 
+        - AttributeName: "empid"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "empid"
+          KeyType: "HASH"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5

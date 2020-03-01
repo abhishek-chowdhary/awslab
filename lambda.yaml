@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: lambda function
+Resources:
+  LambdaFunction: 
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: deploy      
+      Handler: index.lambda_handler
+      Role: !ImportValue CommonRole
+      Code:
+        ZipFile: !Sub |
+          import json
+          import boto3
+          s3_client = boto3.client('s3')
+          dynamodb = boto3.resource('dynamodb')
+          def lambda_handler(event, context):
+            bucket = event['Records'][0]['s3']['bucket']['name']
+            json_file_name = event['Records'][0]['s3']['object']['key']
+            json_object = s3_client.get_object(Bucket=bucket,Key=json_file_name)
+            jsonFileReader = json_object['Body'].read()
+            jsonDict = json.loads(jsonFileReader)
+            table = dynamodb.Table('employeetable')
+            table.put_item(Item=jsonDict)
+            return {
+              'statusCode': 200,
+              'body': json.dumps('Hello from Lambda!')
+            }
+      Runtime: python3.6
+
+  LambdaInvoke:
+    Type: AWS::Lambda::Permission
+    Properties: 
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref LambdaFunction
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref 'AWS::AccountId'
+      SourceArn: !ImportValue S3Bucket
+
+  LogGroupLambda:
+    Type: AWS::Logs::LogGroup
+    Properties: 
+      LogGroupName: lambdalogs    
+      RetentionInDays: 7    
+
+Outputs:
+  LambdaFunctionArn:
+    Value: !GetAtt LambdaFunction.Arn
+    Export:
+      Name: deploylambda
