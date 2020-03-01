@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: No desc
+Description: S3 Bucket Lambda
 Parameters:
   BucketName: 
     Type: String 

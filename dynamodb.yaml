@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Creating DynamoDb table 
+Description: DynamoDb table 
 Parameters:
   TableName: 
     Type: String 

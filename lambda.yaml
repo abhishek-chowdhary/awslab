@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: lambda function
+Description: Lambda function
 Resources:
   LambdaFunction: 
     Type: AWS::Lambda::Function
