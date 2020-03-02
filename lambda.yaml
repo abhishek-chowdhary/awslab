@@ -35,13 +35,7 @@ Resources:
       Principal: s3.amazonaws.com
       SourceAccount: !Ref 'AWS::AccountId'
       SourceArn: !ImportValue S3Bucket
-
-  LogGroupLambda:
-    Type: AWS::Logs::LogGroup
-    Properties: 
-      LogGroupName: lambdalogs    
-      RetentionInDays: 7    
-
+      
 Outputs:
   LambdaFunctionArn:
     Value: !GetAtt LambdaFunction.Arn
