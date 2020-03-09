@@ -1,6 +1,21 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Lambda function
 Resources:
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Ref BucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt deploylambda
+            Filter:
+              S3Key:
+                Rules:
+                - Name: suffix
+                  Value: .json
+    DependsOn:
+     - LambdaInvoke
   LambdaFunction: 
     Type: AWS::Lambda::Function
     Properties:
@@ -34,10 +49,4 @@ Resources:
       FunctionName: !Ref LambdaFunction
       Principal: s3.amazonaws.com
       SourceAccount: !Ref 'AWS::AccountId'
-      SourceArn: !ImportValue S3Bucket
-      
-Outputs:
-  LambdaFunctionArn:
-    Value: !GetAtt LambdaFunction.Arn
-    Export:
-      Name: deploylambda
+      SourceArn: !Sub 'arn:aws:s3:::${BucketName}'      
