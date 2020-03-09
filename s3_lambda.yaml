@@ -12,7 +12,7 @@ Resources:
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: s3:ObjectCreated:*
-            Function: !Ref LambdaFunction
+            Function: !GetAtt LambdaFunction.Arn
             Filter:
               S3Key:
                 Rules:
