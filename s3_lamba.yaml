@@ -1,5 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: S3 and Lambda function
+Parameters:
+  BucketName:
+    Type: String
+    Default: awslab1bucket
 Resources:
   S3Bucket:
     Type: "AWS::S3::Bucket"
