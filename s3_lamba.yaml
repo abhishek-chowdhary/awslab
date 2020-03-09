@@ -12,7 +12,7 @@ Resources:
       NotificationConfiguration:
         LambdaConfigurations:
           - Event: s3:ObjectCreated:*
-            Function: !GetAtt deploylambda
+            Function: !Ref LambdaFunction
             Filter:
               S3Key:
                 Rules:
